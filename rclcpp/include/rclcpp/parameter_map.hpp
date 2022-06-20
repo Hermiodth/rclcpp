@@ -47,7 +47,7 @@ parameter_map_from(const rcl_params_t * const c_params);
 /// \throws InvalidParameterValueException if the `rcl_variant_t` is inconsistent or invalid.
 RCLCPP_PUBLIC
 ParameterValue
-parameter_value_from(const rcl_variant_t * const c_value);
+parameter_value_from(const rcl_variant_t * const c_value, std::string c_param_name);
 
 /// Get the ParameterMap from a yaml file.
 /// \param[in] yaml_filename full name of the yaml file.

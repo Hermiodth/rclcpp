@@ -62,14 +62,14 @@ rclcpp::parameter_map_from(const rcl_params_t * const c_params)
         throw InvalidParametersException(message);
       }
       const rcl_variant_t * const c_param_value = &(c_params_node->parameter_values[p]);
-      params_node.emplace_back(c_param_name, parameter_value_from(c_param_value));
+      params_node.emplace_back(c_param_name, parameter_value_from(c_param_value, c_param_name));
     }
   }
   return parameters;
 }
 
 ParameterValue
-rclcpp::parameter_value_from(const rcl_variant_t * const c_param_value)
+rclcpp::parameter_value_from(const rcl_variant_t * const c_param_value, std::string c_param_name = "")
 {
   if (NULL == c_param_value) {
     throw InvalidParameterValueException("Passed argument is NULL");
@@ -124,7 +124,10 @@ rclcpp::parameter_value_from(const rcl_variant_t * const c_param_value)
     return ParameterValue(strings);
   }
 
-  throw InvalidParameterValueException("No parameter value set");
+  std::string exception_msgs = "No parameter value set";
+  if(!c_param_name.empty()) exception_msgs += " ( param name: " + c_param_name + " )";
+
+  throw InvalidParameterValueException(exception_msgs);
 }
 
 ParameterMap
